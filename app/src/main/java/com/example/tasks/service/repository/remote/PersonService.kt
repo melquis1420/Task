@@ -10,18 +10,24 @@ interface PersonService {
 
     @POST("Authentication/Login")
     @FormUrlEncoded
-    fun login(@Field("email") email:String,
-              @Field("password") password: String
+    fun login(
+        @Field("email") email:String,
+        @Field("password") password: String
     ): Call<HeaderModel>
+
+
+    @POST("Authentication/Create")
+    @FormUrlEncoded
+    fun create(
+        @Field("name") name:String,
+        @Field("email") email:String,
+        @Field("password") password: String,
+        @Field("receiveNews") news: Boolean
+    ): Call<HeaderModel>
+
 }
 
 
 
-/**
-{
-"token": "d+CVvGcmQ+BGHK24T2S9HT7huf33Y8Z630phkYL77F8=",
-"personKey": "AOanaFzaY+kqXNN56MsmjatpH5y6yrqq1",
-"name": "user_name"
-}
-*/
+
 
