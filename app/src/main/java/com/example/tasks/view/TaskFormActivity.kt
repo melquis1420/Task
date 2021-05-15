@@ -9,6 +9,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.tasks.R
+import com.example.tasks.service.constants.TaskConstants
 import com.example.tasks.service.model.TaskModel
 import com.example.tasks.viewmodel.RegisterViewModel
 import com.example.tasks.viewmodel.TaskFormViewModel
@@ -24,6 +25,7 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
     private lateinit var mViewModel: TaskFormViewModel
     private val mDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
     private val mListPriorityId: MutableList<Int> = arrayListOf()
+    private var mTaskId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +33,13 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
 
         mViewModel = ViewModelProvider(this).get(TaskFormViewModel::class.java)
 
-        // Inicializa eventos
+        // Initializes events
         listeners()
         observe()
 
         mViewModel.listPriorities()
+
+        loadDataFromActivity()
     }
 
     override fun onClick(v: View) {
@@ -48,8 +52,17 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
+    private fun loadDataFromActivity() {
+        val bundle = intent.extras
+        if (bundle != null) {
+            mTaskId = bundle.getInt(TaskConstants.BUNDLE.TASKID)
+            mViewModel.load(mTaskId)
+        }
+    }
+
     private fun handleSave() {
         val task = TaskModel().apply {
+            this.id = mTaskId
             this.description = edit_description.text.toString()
             this.complete = check_complete.isChecked
             this.dueDate = button_date.text.toString()
@@ -84,14 +97,34 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
 
         })
 
+        mViewModel.task.observe(this, androidx.lifecycle.Observer {
+            edit_description.setText(it.description)
+            check_complete.isChecked = it.complete
+            spinner_priority.setSelection(getIndex(it.priorityId))
+
+            val date = SimpleDateFormat("yyyy-MM-dd").parse(it.dueDate)
+            button_date.text = mDateFormat.format(date)
+
+        })
+
         mViewModel.validation.observe(this, androidx.lifecycle.Observer {
-            if(it.success()){
+            if (it.success()) {
                 Toast.makeText(this, "Sucesso!", Toast.LENGTH_SHORT).show()
-            }else{
+            } else {
                 Toast.makeText(this, it.failure(), Toast.LENGTH_SHORT).show()
             }
 
         })
+    }
+
+    private fun getIndex(priorityId:Int): Int{
+        var index = 0
+        for (i in 0 until mListPriorityId.count()){
+            if (mListPriorityId[i]== priorityId){
+                index = break
+            }
+        }
+        return index
     }
 
     private fun listeners() {

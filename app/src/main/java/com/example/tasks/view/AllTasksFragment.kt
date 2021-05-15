@@ -32,7 +32,7 @@ class AllTasksFragment : Fragment() {
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = mAdapter
 
-        // Eventos disparados ao clicar nas linhas da RecyclerView
+        // Events triggered when clicking on the RecyclerView lines
         mListener = object : TaskListener {
             override fun onListClick(id: Int) {
                 val intent = Intent(context, TaskFormActivity::class.java)
@@ -52,10 +52,10 @@ class AllTasksFragment : Fragment() {
             }
         }
 
-        // Cria os observadores
+        // Creates observers
         observe()
 
-        // Retorna view
+        // Returns view
         return root
     }
 
@@ -67,7 +67,7 @@ class AllTasksFragment : Fragment() {
 
     private fun observe() {
         mViewModel.tasks.observe(viewLifecycleOwner, Observer {
-            if(it.count()>0){
+            if (it.count() > 0) {
                 mAdapter.updateListener(it)
             }
         })
