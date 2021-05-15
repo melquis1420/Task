@@ -26,16 +26,16 @@ class PriorityRepository(context: Context) {
                     response.body()?.let { mPriorityDatabase.save(it) }
 
                 }
-
             }
 
             override fun onFailure(call: Call<List<PriorityModel>>, t: Throwable) {
 
             }
-
         })
     }
 
     fun list() = mPriorityDatabase.list()
+
+    fun getDescription(id:Int) = mPriorityDatabase.getDescription(id)
 
 }
