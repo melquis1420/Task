@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@drawable/shape_background"
     tools:context=".view.RegisterActivity">
 
     <EditText
@@ -19,11 +20,13 @@
         android:inputType="textPersonName"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        style="@style/EditTextWhite"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edit_email"
         android:layout_width="0dp"
+        style="@style/EditTextWhite"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:drawableStart="@drawable/ic_mail"
@@ -38,6 +41,7 @@
         android:id="@+id/edit_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        style="@style/EditTextWhite"
         android:layout_marginTop="16dp"
         android:drawableStart="@drawable/ic_lock"
         android:drawablePadding="8dp"
